@@ -19,7 +19,7 @@ export default function Login() {
     setError('');
     setLoading(true);
     try {
-      const user = await login(data.email, data.password);
+      const user = await login(data.identifier, data.password);
       const routes = {
         paciente: '/paciente',
         medico: '/medico',
@@ -46,20 +46,16 @@ export default function Login() {
 
         <form onSubmit={handleSubmit(onSubmit)}>
           <div style={styles.field}>
-            <label style={styles.label}>Email</label>
+            <label style={styles.label}>Email o Usuario</label>
             <input
-              type="email"
+              type="text"
               style={styles.input}
-              placeholder="correo@ejemplo.com"
-              {...register('email', {
-                required: 'El email es obligatorio',
-                pattern: {
-                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                  message: 'Formato de email invalido',
-                },
+              placeholder="correo@ejemplo.com o nombre de usuario"
+              {...register('identifier', {
+                required: 'El email o usuario es obligatorio',
               })}
             />
-            {errors.email && <span style={styles.fieldError}>{errors.email.message}</span>}
+            {errors.identifier && <span style={styles.fieldError}>{errors.identifier.message}</span>}
           </div>
 
           <div style={styles.field}>
