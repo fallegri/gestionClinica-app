@@ -143,7 +143,7 @@ describe('Auth Routes', () => {
       expect(res.body.user.role).toBe('paciente');
     });
 
-    it('should return 403 for patient with unverified email', async () => {
+    it('should allow login for patient with unverified email', async () => {
       const hashedPassword = await bcrypt.hash('Password1', 10);
 
       db.query.mockResolvedValueOnce({
@@ -161,7 +161,9 @@ describe('Auth Routes', () => {
         .post('/api/auth/login')
         .send({ email: 'juan@example.com', password: 'Password1' });
 
-      expect(res.status).toBe(403);
+      expect(res.status).toBe(200);
+      expect(res.body.token).toBeDefined();
+      expect(res.body.user.role).toBe('paciente');
     });
 
     it('should return 401 for wrong password', async () => {

@@ -51,13 +51,17 @@ class AuthService {
       password_hash,
     });
 
-    // Send email verification
-    const verificationToken = AuthService.generateEmailVerificationToken(paciente.id);
-    await NotificationService.sendEmailVerification({
-      email: paciente.email,
-      nombre: paciente.nombre,
-      token: verificationToken,
-    });
+    // Send email verification (non-blocking - failure does not prevent registration)
+    try {
+      const verificationToken = AuthService.generateEmailVerificationToken(paciente.id);
+      await NotificationService.sendEmailVerification({
+        email: paciente.email,
+        nombre: paciente.nombre,
+        token: verificationToken,
+      });
+    } catch (err) {
+      console.log('Email verification sending failed (non-blocking):', err.message);
+    }
 
     return {
       user: {
@@ -127,12 +131,12 @@ class AuthService {
       throw error;
     }
 
-    // Check if patient email is verified
-    if (role === 'paciente' && !user.email_verificado) {
-      const error = new Error('Debe verificar su email antes de iniciar sesion');
-      error.status = 403;
-      throw error;
-    }
+    // Email verification check disabled - patients can login without verifying email
+    // if (role === 'paciente' && !user.email_verificado) {
+    //   const error = new Error('Debe verificar su email antes de iniciar sesion');
+    //   error.status = 403;
+    //   throw error;
+    // }
 
     const token = AuthService.generateToken({
       id: user.id,

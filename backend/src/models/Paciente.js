@@ -3,8 +3,8 @@ const db = require('../config/database');
 class Paciente {
   static async create({ nombre, apellido, segundo_apellido, email, telefono, fecha_nacimiento, password_hash }) {
     const result = await db.query(
-      `INSERT INTO pacientes (nombre, apellido, segundo_apellido, email, telefono, fecha_nacimiento, password_hash)
-       VALUES ($1, $2, $3, $4, $5, $6, $7)
+      `INSERT INTO pacientes (nombre, apellido, segundo_apellido, email, telefono, fecha_nacimiento, password_hash, email_verificado)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, TRUE)
        RETURNING *`,
       [nombre, apellido, segundo_apellido || null, email, telefono || null, fecha_nacimiento || null, password_hash]
     );
