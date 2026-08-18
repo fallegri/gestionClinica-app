@@ -43,11 +43,11 @@ export default function Register() {
 
         <form onSubmit={handleSubmit(onSubmit)}>
           <div style={styles.field}>
-            <label style={styles.label}>Nombre completo</label>
+            <label style={styles.label}>Nombre</label>
             <input
               type="text"
               style={styles.input}
-              placeholder="Juan Perez"
+              placeholder="Juan"
               {...register('nombre', {
                 required: 'El nombre es obligatorio',
                 pattern: {
@@ -57,6 +57,39 @@ export default function Register() {
               })}
             />
             {errors.nombre && <span style={styles.fieldError}>{errors.nombre.message}</span>}
+          </div>
+
+          <div style={styles.field}>
+            <label style={styles.label}>Apellido</label>
+            <input
+              type="text"
+              style={styles.input}
+              placeholder="Pérez"
+              {...register('apellido', {
+                required: 'El apellido es obligatorio',
+                pattern: {
+                  value: /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/,
+                  message: 'Solo letras y espacios',
+                },
+              })}
+            />
+            {errors.apellido && <span style={styles.fieldError}>{errors.apellido.message}</span>}
+          </div>
+
+          <div style={styles.field}>
+            <label style={styles.label}>Segundo Apellido</label>
+            <input
+              type="text"
+              style={styles.input}
+              placeholder="López (opcional)"
+              {...register('segundo_apellido', {
+                pattern: {
+                  value: /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]*$/,
+                  message: 'Solo letras y espacios',
+                },
+              })}
+            />
+            {errors.segundo_apellido && <span style={styles.fieldError}>{errors.segundo_apellido.message}</span>}
           </div>
 
           <div style={styles.field}>
