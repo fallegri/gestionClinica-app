@@ -1,0 +1,13 @@
+{
+  "name": "gestionclinica-app",
+  "version": "1.0.0",
+  "description": "Plataforma de Citas Medicas",
+  "scripts": {
+    "start": "node backend/src/index.js",
+    "install:backend": "cd backend && npm install",
+    "postinstall": "cd backend && npm install"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
