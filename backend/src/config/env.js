@@ -2,13 +2,10 @@ require('dotenv').config();
 
 const nodeEnv = process.env.NODE_ENV || 'development';
 
-// In production, JWT secrets must be explicitly configured
+// In production, JWT secret must be explicitly configured
 if (nodeEnv === 'production') {
   if (!process.env.JWT_SECRET) {
     throw new Error('JWT_SECRET environment variable is required in production');
-  }
-  if (!process.env.JWT_REFRESH_SECRET) {
-    throw new Error('JWT_REFRESH_SECRET environment variable is required in production');
   }
 }
 
@@ -27,7 +24,7 @@ const env = {
   // JWT
   jwtSecret: process.env.JWT_SECRET || 'dev-secret-key',
   jwtExpiresIn: process.env.JWT_EXPIRES_IN || '24h',
-  jwtRefreshSecret: process.env.JWT_REFRESH_SECRET || 'dev-refresh-secret-key',
+  jwtRefreshSecret: process.env.JWT_REFRESH_SECRET || process.env.JWT_SECRET || 'dev-refresh-secret-key',
   jwtRefreshExpiresIn: process.env.JWT_REFRESH_EXPIRES_IN || '7d',
 
   // Email

@@ -2,7 +2,10 @@ const { Pool } = require('pg');
 const env = require('./env');
 
 const poolConfig = env.databaseUrl
-  ? { connectionString: env.databaseUrl }
+  ? { 
+      connectionString: env.databaseUrl,
+      ssl: { rejectUnauthorized: false }
+    }
   : {
       host: env.pgHost,
       port: env.pgPort,
