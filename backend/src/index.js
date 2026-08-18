@@ -17,8 +17,14 @@ const secretariaRoutes = require('./routes/secretaria.routes');
 
 const app = express();
 
-// Security middleware
-app.use(helmet());
+// Handle preflight OPTIONS requests first, before any other middleware
+app.options('*', (req, res) => {
+  res.header('Access-Control-Allow-Origin', req.headers.origin || '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  res.sendStatus(204);
+});
 
 // CORS configuration
 app.use(cors({
@@ -50,8 +56,17 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 
-// Rate limiting
-app.use(generalLimiter);
+// Security middleware
+app.use(helmet({
+  crossOriginResourcePolicy: false,
+  crossOriginOpenerPolicy: false,
+}));
+
+// Rate limiting (skip for OPTIONS preflight requests)
+app.use((req, res, next) => {
+  if (req.method === 'OPTIONS') return next();
+  generalLimiter(req, res, next);
+});
 
 // Body parsing
 app.use(express.json({ limit: '10mb' }));
